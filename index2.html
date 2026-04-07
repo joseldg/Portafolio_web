@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NEXUS_DEV // Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================
+       CYBERPUNK DARK PORTFOLIO — CSS VARIABLES
+    ============================================ */
+    :root {
+      --neon-cyan:   #00f5ff;
+      --neon-pink:   #ff2079;
+      --neon-green:  #39ff14;
+      --neon-yellow: #ffd700;
+      --neon-purple: #bf00ff;
+      --bg-void:     #020408;
+      --bg-dark:     #070d14;
+      --bg-card:     #0a1520;
+      --bg-card2:    #0d1b2a;
+      --grid-line:   rgba(0,245,255,0.06);
+      --text-primary: #e8f4f8;
+      --text-dim:     #6a8a9a;
+      --text-muted:   #3a5060;
+      --font-display: 'Orbitron', monospace;
+      --font-mono:    'Share Tech Mono', monospace;
+      --font-body:    'Rajdhani', sans-serif;
+      --glow-cyan:    0 0 8px #00f5ff, 0 0 20px rgba(0,245,255,0.4);
+      --glow-pink:    0 0 8px #ff2079, 0 0 20px rgba(255,32,121,0.4);
+      --glow-green:   0 0 8px #39ff14, 0 0 20px rgba(57,255,20,0.4);
+    }
+
+    /* ============================================  RESET & BASE  */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg-void); }
+    ::-webkit-scrollbar-thumb { background: var(--neon-cyan); box-shadow: var(--glow-cyan); }
+
+    /* ============================================  GRID BACKGROUND  */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+    }
+
+    /* Scanlines overlay */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+      animation: scanMove 8s linear infinite;
+    }
+
+    @keyframes scanMove {
+      0%   { background-position: 0 0; }
+      100% { background-position: 0 100px; }
+    }
+
+    section, nav, footer { position: relative; z-index: 1; }
+
+    /* ============================================  CUSTOM CURSOR  */
+    .cursor-dot {
+      width: 8px; height: 8px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      position: fixed; z-index: 9999;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      box-shadow: var(--glow-cyan);
+      transition: transform 0.1s;
+    }
+    .cursor-ring {
+      width: 32px; height: 32px;
+      border: 1px solid rgba(0,245,255,0.5);
+      border-radius: 50%;
+      position: fixed; z-index: 9998;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.2s, height 0.2s;
+    }
+
+    /* ============================================  GLITCH TEXT  */
+    .glitch {
+      position: relative;
+      animation: glitchBase 4s infinite;
+    }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch::before {
+      color: var(--neon-pink);
+      clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+      animation: glitch1 3s infinite;
+    }
+    .glitch::after {
+      color: var(--neon-cyan);
+      clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+      animation: glitch2 3.5s infinite;
+    }
+
+    @keyframes glitchBase {
+      0%,90%,100% { transform: translate(0); }
+      92% { transform: translate(-1px, 1px); }
+      94% { transform: translate(1px, -1px); }
+      96% { transform: translate(-1px, 0); }
+    }
+    @keyframes glitch1 {
+      0%,85%,100% { transform: translate(0); opacity: 0; }
+      87% { transform: translate(-3px, 2px); opacity: 0.8; }
+      90% { transform: translate(3px, -2px); opacity: 0.8; }
+    }
+    @keyframes glitch2 {
+      0%,88%,100% { transform: translate(0); opacity: 0; }
+      90% { transform: translate(3px, 2px); opacity: 0.8; }
+      93% { transform: translate(-3px, -2px); opacity: 0.8; }
+    }
+
+    /* ============================================  NEON TEXT UTILITIES  */
+    .text-neon-cyan   { color: var(--neon-cyan);   text-shadow: var(--glow-cyan); }
+    .text-neon-pink   { color: var(--neon-pink);   text-shadow: var(--glow-pink); }
+    .text-neon-green  { color: var(--neon-green);  text-shadow: var(--glow-green); }
+    .text-neon-yellow { color: var(--neon-yellow); text-shadow: 0 0 8px #ffd700, 0 0 20px rgba(255,215,0,0.4); }
+
+    .font-display { font-family: var(--font-display); }
+    .font-mono    { font-family: var(--font-mono); }
+
+    /* ============================================  NEON BUTTON  */
+    .btn-neon {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      background: transparent;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+    .btn-neon::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--neon-cyan);
+      transform: translateX(-100%);
+      transition: transform 0.3s;
+      z-index: -1;
+    }
+    .btn-neon:hover {
+      color: var(--bg-void);
+      box-shadow: var(--glow-cyan);
+    }
+    .btn-neon:hover::before { transform: translateX(0); }
+
+    .btn-neon-pink {
+      border-color: var(--neon-pink);
+      color: var(--neon-pink);
+    }
+    .btn-neon-pink::before { background: var(--neon-pink); }
+    .btn-neon-pink:hover { box-shadow: var(--glow-pink); }
+
+    /* ============================================  NAVBAR  */
+    #navbar {
+      background: rgba(2,4,8,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,245,255,0.15);
+      padding: 0;
+      transition: all 0.3s;
+    }
+    #navbar.scrolled {
+      border-bottom-color: var(--neon-cyan);
+      box-shadow: 0 2px 20px rgba(0,245,255,0.15);
+    }
+
+    .navbar-brand {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--neon-cyan) !important;
+      text-shadow: var(--glow-cyan);
+      padding: 18px 0;
+    }
+    .navbar-brand span { color: var(--neon-pink); text-shadow: var(--glow-pink); }
+
+    .nav-link {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim) !important;
+      padding: 20px 16px !important;
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute; bottom: 14px; left: 16px; right: 16px;
+      height: 1px;
+      background: var(--neon-cyan);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      box-shadow: var(--glow-cyan);
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--neon-cyan) !important;
+    }
+    .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+
+    .navbar-toggler {
+      border: 1px solid var(--neon-cyan);
+      padding: 6px 10px;
+    }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2300f5ff' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    /* Status indicator */
+    .nav-status {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--neon-green);
+      animation: blink 1.5s infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ============================================  HERO  */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 100px 0 60px;
+      overflow: hidden;
+    }
+
+    .hero-terminal {
+      background: var(--bg-dark);
+      border: 1px solid rgba(0,245,255,0.2);
+      border-radius: 0;
+      padding: 0;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      position: relative;
+    }
+    .hero-terminal::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,245,255,0.03) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .terminal-bar {
+      background: rgba(0,245,255,0.06);
+      border-bottom: 1px solid rgba(0,245,255,0.15);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .terminal-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .td-red   { background: #ff5f57; box-shadow: 0 0 6px #ff5f57; }
+    .td-yellow{ background: #ffbd2e; box-shadow: 0 0 6px #ffbd2e; }
+    .td-green { background: #28ca41; box-shadow: 0 0 6px #28ca41; }
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-left: 8px;
+    }
+
+    .terminal-body { padding: 28px 32px; }
+
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--neon-pink);
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+    .hero-tag i { margin-right: 6px; }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 4px;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(0,245,255,0.3);
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-family: var(--font-mono);
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      color: var(--neon-cyan);
+      letter-spacing: 3px;
+      margin-bottom: 24px;
+    }
+    .hero-title .cursor-blink {
+      animation: cursorBlink 1s infinite;
+      color: var(--neon-pink);
+    }
+    @keyframes cursorBlink { 50% { opacity: 0; } }
+
+    .hero-bio {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+      max-width: 520px;
+    }
+    .hero-bio strong { color: var(--neon-cyan); }
+
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 12px 20px;
+      border: 1px solid rgba(0,245,255,0.15);
+      background: rgba(0,245,255,0.03);
+      clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--neon-cyan);
+      text-shadow: var(--glow-cyan);
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Hero avatar */
+    .hero-avatar-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .hero-avatar-frame {
+      position: relative;
+      width: 280px; height: 280px;
+      margin: 0 auto;
+    }
+    .avatar-hex {
+      width: 100%; height: 100%;
+      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+      background: linear-gradient(135deg, var(--bg-card), var(--bg-card2));
+      border: 2px solid rgba(0,245,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 100px;
+      text-shadow: 0 0 30px rgba(0,245,255,0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-hex::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,245,255,0.1), transparent);
+    }
+
+    .avatar-ring {
+      position: absolute; inset: -12px;
+      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+      border: 1px solid rgba(0,245,255,0.3);
+      animation: rotateRing 8s linear infinite;
+    }
+    .avatar-ring2 {
+      position: absolute; inset: -24px;
+      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+      border: 1px solid rgba(255,32,121,0.2);
+      animation: rotateRing 12s linear infinite reverse;
+    }
+    @keyframes rotateRing {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .avatar-scan {
+      position: absolute; inset: 0;
+      overflow: hidden;
+      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    }
+    .avatar-scan::after {
+      content: '';
+      position: absolute; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      box-shadow: 0 0 10px var(--neon-cyan);
+      animation: scan 3s ease-in-out infinite;
+    }
+    @keyframes scan {
+      0%   { top: 0; opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .badge-item {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--neon-green);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-item i { color: var(--neon-cyan); width: 14px; }
+
+    /* ============================================  SECTION HEADERS  */
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      color: var(--neon-pink);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .section-label::before, .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: var(--neon-pink);
+      box-shadow: var(--glow-pink);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    .section-divider {
+      width: 80px; height: 2px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+      margin: 16px auto 0;
+      box-shadow: var(--glow-cyan);
+    }
+
+    /* ============================================  ABOUT / STATS  */
+    #about { padding: 100px 0; background: var(--bg-dark); }
+
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,245,255,0.12);
+      padding: 36px;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+      position: relative;
+      transition: border-color 0.3s;
+    }
+    .about-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,245,255,0.02), transparent);
+    }
+    .about-card:hover { border-color: rgba(0,245,255,0.35); }
+
+    .about-card .card-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+    .about-card h3 {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--neon-cyan);
+      margin-bottom: 12px;
+    }
+    .about-card p {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    /* ============================================  TECH STACK  */
+    #stack { padding: 100px 0; }
+
+    .tech-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,245,255,0.1);
+      padding: 28px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      cursor: default;
+    }
+    .tech-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,245,255,0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .tech-card:hover {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 20px rgba(0,245,255,0.15), inset 0 0 20px rgba(0,245,255,0.03);
+      transform: translateY(-4px);
+    }
+    .tech-card:hover::before { opacity: 1; }
+
+    .tech-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .tech-name {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .tech-level {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .tech-bar {
+      height: 2px;
+      background: rgba(255,255,255,0.05);
+      position: relative;
+      overflow: visible;
+    }
+    .tech-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+      box-shadow: var(--glow-cyan);
+      transition: width 1.5s cubic-bezier(0.16,1,0.3,1);
+      width: 0;
+    }
+    .tech-bar-fill.animated { }
+
+    /* Category filter buttons */
+    .filter-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .filter-btn {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid rgba(0,245,255,0.2);
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      background: rgba(0,245,255,0.05);
+      box-shadow: var(--glow-cyan);
+    }
+
+    /* ============================================  PROJECTS  */
+    #projects { padding: 100px 0; background: var(--bg-dark); }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,245,255,0.1);
+      overflow: hidden;
+      position: relative;
+      transition: all 0.4s;
+      height: 100%;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+    .project-card:hover {
+      border-color: rgba(0,245,255,0.3);
+      box-shadow: 0 8px 40px rgba(0,245,255,0.1);
+      transform: translateY(-6px);
+    }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-thumb {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-thumb::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, var(--bg-card));
+    }
+
+    .project-body { padding: 24px; }
+    .project-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      padding: 3px 10px;
+      border: 1px solid rgba(0,245,255,0.2);
+      color: var(--neon-cyan);
+      letter-spacing: 1px;
+    }
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .project-links {
+      display: flex;
+      gap: 10px;
+    }
+    .proj-btn {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 7px 16px;
+      border: 1px solid rgba(0,245,255,0.3);
+      color: var(--neon-cyan);
+      background: transparent;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .proj-btn:hover {
+      background: rgba(0,245,255,0.08);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: var(--glow-cyan);
+    }
+    .proj-btn-pink {
+      border-color: rgba(255,32,121,0.3);
+      color: var(--neon-pink);
+    }
+    .proj-btn-pink:hover {
+      background: rgba(255,32,121,0.08);
+      border-color: var(--neon-pink);
+      color: var(--neon-pink);
+      box-shadow: var(--glow-pink);
+    }
+
+    /* Project filter */
+    .project-filter { display: none; }
+    .project-filter.show { display: flex; }
+    .project-item { display: block; }
+    .project-item.hidden { display: none; }
+
+    /* ============================================  CONTACT  */
+    #contact { padding: 100px 0; }
+
+    .contact-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,245,255,0.12);
+      padding: 40px;
+      position: relative;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    }
+
+    .form-control-neon {
+      background: rgba(0,245,255,0.03);
+      border: 1px solid rgba(0,245,255,0.15);
+      border-radius: 0;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 12px 16px;
+      transition: all 0.3s;
+    }
+    .form-control-neon:focus {
+      background: rgba(0,245,255,0.05);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 0 2px rgba(0,245,255,0.1);
+      color: var(--text-primary);
+      outline: none;
+    }
+    .form-control-neon::placeholder { color: var(--text-muted); }
+
+    .form-label-neon {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* ============================================  FOOTER  */
+    footer {
+      background: var(--bg-dark);
+      border-top: 1px solid rgba(0,245,255,0.15);
+      padding: 40px 0 30px;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--neon-cyan);
+      text-shadow: var(--glow-cyan);
+    }
+    .footer-logo span { color: var(--neon-pink); text-shadow: var(--glow-pink); }
+
+    .social-links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .social-link {
+      width: 44px; height: 44px;
+      border: 1px solid rgba(0,245,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+    .social-link:hover {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: var(--glow-cyan);
+      background: rgba(0,245,255,0.08);
+    }
+
+    .footer-text {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    /* Back to top */
+    #backToTop {
+      position: fixed;
+      bottom: 30px; right: 30px;
+      width: 44px; height: 44px;
+      background: var(--bg-dark);
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      z-index: 999;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+      box-shadow: var(--glow-cyan);
+    }
+    #backToTop.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+    #backToTop:hover { background: var(--neon-cyan); color: var(--bg-void); }
+
+    /* ============================================  ANIMATIONS  */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hex decorative elements */
+    .hex-deco {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: rgba(0,245,255,0.15);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* Matrix rain canvas */
+    #matrix-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      opacity: 0.03;
+      pointer-events: none;
+    }
+
+    /* Neon divider */
+    .neon-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      box-shadow: var(--glow-cyan);
+      margin: 20px 0;
+    }
+
+    /* Corner decorations */
+    .corner-tl, .corner-br {
+      position: absolute;
+      width: 20px; height: 20px;
+      pointer-events: none;
+    }
+    .corner-tl { top: -1px; left: -1px; border-top: 2px solid var(--neon-cyan); border-left: 2px solid var(--neon-cyan); }
+    .corner-br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--neon-cyan); border-right: 2px solid var(--neon-cyan); }
+
+    /* ============================================  RESPONSIVE  */
+    @media (max-width: 992px) {
+      .hero-avatar-frame { width: 220px; height: 220px; }
+      #hero { padding-top: 80px; }
+    }
+
+    @media (max-width: 768px) {
+      .hero-avatar-frame { width: 180px; height: 180px; }
+      .avatar-hex { font-size: 70px; }
+      .hero-stats { gap: 12px; }
+      .terminal-body { padding: 20px; }
+    }
+
+    @media (max-width: 576px) {
+      .section-title { letter-spacing: 2px; }
+      .hero-name { letter-spacing: 2px; }
+      .nav-link { padding: 14px 10px !important; }
+      .contact-card { padding: 24px; }
+    }
+
+    /* ============================================  THEME COLORS PER SECTION  */
+    #stack .tech-card:nth-child(3n+1):hover { border-color: var(--neon-cyan); }
+    #stack .tech-card:nth-child(3n+2):hover { border-color: var(--neon-pink); box-shadow: 0 0 20px rgba(255,32,121,0.15); }
+    #stack .tech-card:nth-child(3n):hover    { border-color: var(--neon-green); box-shadow: 0 0 20px rgba(57,255,20,0.15); }
+  </style>
+</head>
+<body>
+
+<!-- Matrix Canvas -->
+<canvas id="matrix-canvas"></canvas>
+
+<!-- Custom Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ==========================================
+     NAVBAR
+========================================== -->
+<nav id="navbar" class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      NEXUS<span>_</span>DEV
+    </a>
+
+    <div class="d-flex align-items-center gap-3 order-lg-3">
+      <span class="nav-status d-none d-sm-block">
+        <i class="fas fa-circle" style="font-size:0.5rem;"></i> ONLINE
+      </span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <div class="collapse navbar-collapse order-lg-2" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="#hero">INICIO</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">ACERCA</a></li>
+        <li class="nav-item"><a class="nav-link" href="#stack">STACK</a></li>
+        <li class="nav-item"><a class="nav-link" href="#projects">PROYECTOS</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">CONTACTO</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ==========================================
+     HERO
+========================================== -->
+<section id="hero">
+  <div class="container">
+    <div class="row align-items-center gy-5">
+
+      <!-- LEFT: Bio -->
+      <div class="col-lg-7 fade-in">
+        <div class="hero-terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dot td-red"></div>
+            <div class="terminal-dot td-yellow"></div>
+            <div class="terminal-dot td-green"></div>
+            <span class="terminal-title">~/portfolio/index.sh — zsh</span>
+          </div>
+          <div class="terminal-body">
+            <div class="hero-tag">
+              <i class="fas fa-terminal"></i>
+              <span id="typed-tag"></span><span class="cursor-blink">█</span>
+            </div>
+
+            <h1 class="hero-name glitch" data-text="Jose Lopez">
+              Jose Lopez
+            </h1>
+
+            <div class="hero-title">
+              <span id="typed-role"></span><span class="cursor-blink">_</span>
+            </div>
+
+            <p class="hero-bio">
+              Desarrollador Full-Stack con <strong>6+ años</strong> construyendo sistemas que viven en la frontera entre
+              <strong>código y caos</strong>. Especializado en arquitecturas escalables, seguridad ofensiva y experiencias
+              digitales que desafían lo convencional. <strong>Construyo el futuro, una línea a la vez.</strong>
+            </p>
+
+            <div class="hero-stats">
+              <div class="stat-item">
+                <div class="stat-num">50+</div>
+                <div class="stat-label">Proyectos</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">6+</div>
+                <div class="stat-label">Años Exp.</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">99%</div>
+                <div class="stat-label">Uptime</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">∞</div>
+                <div class="stat-label">Café ☕</div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-3 flex-wrap">
+              <a href="#projects" class="btn-neon">
+                <i class="fas fa-code me-2"></i>VER PROYECTOS
+              </a>
+              <a href="#contact" class="btn-neon btn-neon-pink">
+                <i class="fas fa-paper-plane me-2"></i>CONTACTAR
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Avatar -->
+      <div class="col-lg-5 text-center fade-in" style="transition-delay:0.2s">
+        <div class="hero-avatar-wrap">
+          <div class="hero-avatar-frame">
+            <div class="avatar-ring2"></div>
+            <div class="avatar-ring"></div>
+            <div class="avatar-hex">
+              <span>👾</span>
+              <div class="avatar-scan"></div>
+            </div>
+          </div>
+
+          <div class="hero-badges mt-4 text-start d-inline-block">
+            <div class="badge-item"><i class="fas fa-shield-alt"></i> SECURITY CLEARANCE: L3</div>
+            <div class="badge-item"><i class="fas fa-network-wired"></i> NET STATUS: ENCRYPTED</div>
+            <div class="badge-item"><i class="fas fa-microchip"></i> SYS: ARCH LINUX // ACTIVE</div>
+            <div class="badge-item"><i class="fas fa-lock"></i> PGP: VERIFIED ✓</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     ABOUT
+========================================== -->
+<section id="about">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">// SISTEMA.INFO</div>
+      <h2 class="section-title">ACERCA <span class="text-neon-cyan">DE MÍ</span></h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3 fade-in">
+        <div class="about-card h-100">
+          <div class="card-icon">⚡</div>
+          <h3>PERFORMANCE</h3>
+          <p>Obsesionado con la velocidad. Optimizo cada milisegundo. Web Vitals perfectos son el estándar mínimo.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 fade-in" style="transition-delay:0.1s">
+        <div class="about-card h-100">
+          <div class="card-icon">🔐</div>
+          <h3>SEGURIDAD</h3>
+          <p>Pienso como un atacante, construyo como un defensor. Zero-trust es filosofía de vida.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 fade-in" style="transition-delay:0.2s">
+        <div class="about-card h-100">
+          <div class="card-icon">🤖</div>
+          <h3>AUTOMATIZACIÓN</h3>
+          <p>Si se hace más de dos veces, se automatiza. CI/CD, IaC y orquestación de contenedores son mi lengua nativa.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 fade-in" style="transition-delay:0.3s">
+        <div class="about-card h-100">
+          <div class="card-icon">🌐</div>
+          <h3>OPEN SOURCE</h3>
+          <p>Contribuidor activo. El código libre es la infraestructura invisible que sostiene el mundo digital.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     TECH STACK
+========================================== -->
+<section id="stack">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">// MÓDULOS.CARGADOS</div>
+      <h2 class="section-title">TECH <span class="text-neon-pink">STACK</span></h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="filter-group fade-in">
+      <button class="filter-btn active" data-filter="all">TODOS</button>
+      <button class="filter-btn" data-filter="frontend">FRONTEND</button>
+      <button class="filter-btn" data-filter="backend">BACKEND</button>
+      <button class="filter-btn" data-filter="devops">DEVOPS</button>
+      <button class="filter-btn" data-filter="security">SECURITY</button>
+    </div>
+
+    <div class="row g-3" id="stackGrid">
+
+      <!-- Frontend -->
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="frontend">
+        <div class="tech-card">
+          <span class="tech-icon">⚛️</span>
+          <div class="tech-name">React</div>
+          <div class="tech-level">EXPERTO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="95"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="frontend" style="transition-delay:0.05s">
+        <div class="tech-card">
+          <span class="tech-icon">💚</span>
+          <div class="tech-name">Vue.js</div>
+          <div class="tech-level">AVANZADO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="85"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="frontend" style="transition-delay:0.1s">
+        <div class="tech-card">
+          <span class="tech-icon">🔷</span>
+          <div class="tech-name">TypeScript</div>
+          <div class="tech-level">EXPERTO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="90"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="frontend" style="transition-delay:0.15s">
+        <div class="tech-card">
+          <span class="tech-icon">🎨</span>
+          <div class="tech-name">CSS3</div>
+          <div class="tech-level">EXPERTO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="95"></div></div>
+        </div>
+      </div>
+
+      <!-- Backend -->
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="backend" style="transition-delay:0.2s">
+        <div class="tech-card">
+          <span class="tech-icon">🟢</span>
+          <div class="tech-name">Node.js</div>
+          <div class="tech-level">EXPERTO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="92"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="backend" style="transition-delay:0.25s">
+        <div class="tech-card">
+          <span class="tech-icon">🐍</span>
+          <div class="tech-name">Python</div>
+          <div class="tech-level">AVANZADO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="88"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="backend" style="transition-delay:0.3s">
+        <div class="tech-card">
+          <span class="tech-icon">🦀</span>
+          <div class="tech-name">Rust</div>
+          <div class="tech-level">INTERMEDIO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="65"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="backend" style="transition-delay:0.35s">
+        <div class="tech-card">
+          <span class="tech-icon">🐘</span>
+          <div class="tech-name">PostgreSQL</div>
+          <div class="tech-level">AVANZADO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="82"></div></div>
+        </div>
+      </div>
+
+      <!-- DevOps -->
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="devops" style="transition-delay:0.4s">
+        <div class="tech-card">
+          <span class="tech-icon">🐳</span>
+          <div class="tech-name">Docker</div>
+          <div class="tech-level">EXPERTO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="93"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="devops" style="transition-delay:0.45s">
+        <div class="tech-card">
+          <span class="tech-icon">☸️</span>
+          <div class="tech-name">Kubernetes</div>
+          <div class="tech-level">AVANZADO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="80"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="devops" style="transition-delay:0.5s">
+        <div class="tech-card">
+          <span class="tech-icon">☁️</span>
+          <div class="tech-name">AWS</div>
+          <div class="tech-level">AVANZADO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="78"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="devops" style="transition-delay:0.55s">
+        <div class="tech-card">
+          <span class="tech-icon">🔄</span>
+          <div class="tech-name">GitHub CI</div>
+          <div class="tech-level">EXPERTO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="91"></div></div>
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="security" style="transition-delay:0.6s">
+        <div class="tech-card">
+          <span class="tech-icon">🕷️</span>
+          <div class="tech-name">Pentesting</div>
+          <div class="tech-level">AVANZADO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="85"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-sm-4 col-md-3 col-xl-2 tech-col fade-in" data-cat="security" style="transition-delay:0.65s">
+        <div class="tech-card">
+          <span class="tech-icon">🔑</span>
+          <div class="tech-name">OAuth/JWT</div>
+          <div class="tech-level">EXPERTO</div>
+          <div class="tech-bar"><div class="tech-bar-fill" data-width="96"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     PROJECTS
+========================================== -->
+<section id="projects">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">// OPERACIONES.COMPLETADAS</div>
+      <h2 class="section-title">MIS <span class="text-neon-green">PROYECTOS</span></h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="filter-group fade-in">
+      <button class="filter-btn active" data-project-filter="all">TODOS</button>
+      <button class="filter-btn" data-project-filter="web">WEB APP</button>
+      <button class="filter-btn" data-project-filter="api">API / BACKEND</button>
+      <button class="filter-btn" data-project-filter="security">SECURITY</button>
+      <button class="filter-btn" data-project-filter="tool">HERRAMIENTA</button>
+    </div>
+
+    <div class="row g-4" id="projectsGrid">
+
+      <div class="col-md-6 col-lg-4 fade-in project-item" data-pcat="web">
+        <div class="project-card">
+          <div class="project-thumb" style="background: linear-gradient(135deg, #0a1520, #0d2d1f);">🌐</div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">React</span>
+              <span class="project-tag">Node.js</span>
+              <span class="project-tag">MongoDB</span>
+            </div>
+            <div class="project-title">CRYPTOBOARD PRO</div>
+            <p class="project-desc">Dashboard en tiempo real para monitoreo de criptomonedas con WebSockets, alertas inteligentes y análisis técnico integrado.</p>
+            <div class="project-links">
+              <a href="#" class="proj-btn"><i class="fas fa-external-link-alt"></i> DEMO</a>
+              <a href="#" class="proj-btn proj-btn-pink"><i class="fab fa-github"></i> REPO</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 fade-in project-item" data-pcat="security" style="transition-delay:0.1s">
+        <div class="project-card">
+          <div class="project-thumb" style="background: linear-gradient(135deg, #0a1520, #1a0a20);">🛡️</div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Nmap</span>
+              <span class="project-tag">FastAPI</span>
+            </div>
+            <div class="project-title">NETSCANNER X</div>
+            <p class="project-desc">Herramienta de reconocimiento de red con interfaz web. Detecta vulnerabilidades CVE, escanea puertos y genera reportes automáticos.</p>
+            <div class="project-links">
+              <a href="#" class="proj-btn"><i class="fas fa-external-link-alt"></i> DEMO</a>
+              <a href="#" class="proj-btn proj-btn-pink"><i class="fab fa-github"></i> REPO</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 fade-in project-item" data-pcat="api" style="transition-delay:0.2s">
+        <div class="project-card">
+          <div class="project-thumb" style="background: linear-gradient(135deg, #0a1520, #1a1500);">⚡</div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">Rust</span>
+              <span class="project-tag">PostgreSQL</span>
+              <span class="project-tag">Redis</span>
+            </div>
+            <div class="project-title">HYPERAPI ENGINE</div>
+            <p class="project-desc">Motor de API de ultra alto rendimiento construido en Rust. Maneja 100k+ req/s con latencia sub-millisecond y caché inteligente.</p>
+            <div class="project-links">
+              <a href="#" class="proj-btn"><i class="fas fa-external-link-alt"></i> DEMO</a>
+              <a href="#" class="proj-btn proj-btn-pink"><i class="fab fa-github"></i> REPO</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 fade-in project-item" data-pcat="tool" style="transition-delay:0.1s">
+        <div class="project-card">
+          <div class="project-thumb" style="background: linear-gradient(135deg, #0a1520, #001a1a);">🤖</div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Docker</span>
+              <span class="project-tag">K8s</span>
+            </div>
+            <div class="project-title">DEVOPS AUTOPILOT</div>
+            <p class="project-desc">Suite de automatización de infraestructura. Deploy, monitoreo, rollback automático y notificaciones en Slack/Discord.</p>
+            <div class="project-links">
+              <a href="#" class="proj-btn"><i class="fas fa-external-link-alt"></i> DEMO</a>
+              <a href="#" class="proj-btn proj-btn-pink"><i class="fab fa-github"></i> REPO</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 fade-in project-item" data-pcat="web" style="transition-delay:0.2s">
+        <div class="project-card">
+          <div class="project-thumb" style="background: linear-gradient(135deg, #0a1520, #1a0a0a);">🎮</div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">Vue 3</span>
+              <span class="project-tag">WebGL</span>
+              <span class="project-tag">Socket.io</span>
+            </div>
+            <div class="project-title">NEXUS ARENA</div>
+            <p class="project-desc">Plataforma de juego multijugador en tiempo real con ranking global, torneos automáticos y lobby con chat encriptado.</p>
+            <div class="project-links">
+              <a href="#" class="proj-btn"><i class="fas fa-external-link-alt"></i> DEMO</a>
+              <a href="#" class="proj-btn proj-btn-pink"><i class="fab fa-github"></i> REPO</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 fade-in project-item" data-pcat="security" style="transition-delay:0.3s">
+        <div class="project-card">
+          <div class="project-thumb" style="background: linear-gradient(135deg, #0a1520, #0a200a);">🔐</div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">TypeScript</span>
+              <span class="project-tag">Crypto</span>
+              <span class="project-tag">WASM</span>
+            </div>
+            <div class="project-title">VAULTCHAIN</div>
+            <p class="project-desc">Gestor de contraseñas descentralizado con cifrado AES-256, derivación de claves PBKDF2 y sincronización end-to-end encriptada.</p>
+            <div class="project-links">
+              <a href="#" class="proj-btn"><i class="fas fa-external-link-alt"></i> DEMO</a>
+              <a href="#" class="proj-btn proj-btn-pink"><i class="fab fa-github"></i> REPO</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     CONTACT
+========================================== -->
+<section id="contact">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">// INICIAR.CONEXIÓN</div>
+      <h2 class="section-title">CONTACTO <span class="text-neon-yellow">⚡</span></h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-7 fade-in">
+        <div class="contact-card">
+          <div class="corner-tl"></div>
+          <div class="corner-br"></div>
+          <div class="font-mono text-neon-cyan mb-4" style="font-size:0.7rem; letter-spacing:2px;">
+            <i class="fas fa-terminal me-2"></i>TRANSMISIÓN SEGURA // AES-256
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-neon"><i class="fas fa-user me-1"></i> IDENTIFICADOR</label>
+            <input type="text" class="form-control form-control-neon" placeholder="tu_nombre@sistema">
+          </div>
+          <div class="mb-3">
+            <label class="form-label-neon"><i class="fas fa-at me-1"></i> NODO_DESTINO</label>
+            <input type="email" class="form-control form-control-neon" placeholder="correo@dominio.com">
+          </div>
+          <div class="mb-3">
+            <label class="form-label-neon"><i class="fas fa-tag me-1"></i> PROTOCOLO</label>
+            <select class="form-control form-control-neon">
+              <option value="">-- SELECCIONAR OPERACIÓN --</option>
+              <option>PROYECTO COLABORATIVO</option>
+              <option>CONSULTORÍA TÉCNICA</option>
+              <option>PROPUESTA LABORAL</option>
+              <option>AUDITORÍA DE SEGURIDAD</option>
+              <option>OTRO</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="form-label-neon"><i class="fas fa-code me-1"></i> PAYLOAD</label>
+            <textarea class="form-control form-control-neon" rows="5" placeholder="// Escribe tu mensaje aquí..."></textarea>
+          </div>
+
+          <button class="btn-neon w-100" id="submitBtn" onclick="handleSubmit(this)">
+            <i class="fas fa-paper-plane me-2"></i>TRANSMITIR MENSAJE
+          </button>
+        </div>
+      </div>
+
+      <!-- Side info -->
+      <div class="col-lg-4 fade-in" style="transition-delay:0.2s">
+        <div class="d-flex flex-column gap-3 h-100">
+          <div class="about-card">
+            <div class="card-icon">📍</div>
+            <h3>LOCALIZACIÓN</h3>
+            <p>Santo Domingo, República Dominicana 🌴<br>
+               <span class="text-neon-green">Disponible Remote Global</span></p>
+          </div>
+          <div class="about-card">
+            <div class="card-icon">⏱️</div>
+            <h3>RESPUESTA</h3>
+            <p>Tiempo de respuesta: <span class="text-neon-cyan">&lt; 24 horas</span><br>
+               Zona horaria: <span class="text-neon-cyan">AST (UTC-4)</span></p>
+          </div>
+          <div class="about-card">
+            <div class="card-icon">💼</div>
+            <h3>DISPONIBILIDAD</h3>
+            <p>Abierto a proyectos freelance,<br>
+               <span class="text-neon-green">posiciones remotas full-time</span><br>
+               y colaboraciones open source.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     FOOTER
+========================================== -->
+<footer>
+  <div class="container">
+    <div class="row align-items-center gy-3">
+      <div class="col-md-4 text-center text-md-start">
+        <div class="footer-logo">NEXUS<span>_</span>DEV</div>
+        <div class="footer-text mt-1">// CONSTRUYENDO EL FUTURO</div>
+      </div>
+
+      <div class="col-md-4 text-center">
+        <div class="social-links">
+          <a href="#" class="social-link" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="#" class="social-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-link" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="#" class="social-link" title="Discord"><i class="fab fa-discord"></i></a>
+          <a href="#" class="social-link" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+      </div>
+
+      <div class="col-md-4 text-center text-md-end">
+        <div class="footer-text">
+          &copy; 2025 NEXUS_DEV<br>
+          <span class="text-neon-cyan">TODOS LOS DERECHOS RESERVADOS</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="neon-line mt-4"></div>
+
+    <div class="text-center mt-3">
+      <div class="footer-text">
+        <span id="clock" class="text-neon-cyan"></span>
+        &nbsp;|&nbsp; SYS_STATUS: <span class="text-neon-green">ONLINE</span>
+        &nbsp;|&nbsp; UPTIME: <span id="uptime" class="text-neon-yellow">--</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to Top -->
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ============================================
+   CURSOR CUSTOM
+============================================ */
+const dot  = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  dot.style.left  = e.clientX + 'px';
+  dot.style.top   = e.clientY + 'px';
+  ring.style.left = e.clientX + 'px';
+  ring.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a, button, .tech-card, .project-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.style.width  = '50px';
+    ring.style.height = '50px';
+    dot.style.transform = 'translate(-50%,-50%) scale(2)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width  = '32px';
+    ring.style.height = '32px';
+    dot.style.transform = 'translate(-50%,-50%) scale(1)';
+  });
+});
+
+/* ============================================
+   MATRIX RAIN
+============================================ */
+(function() {
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+  window.addEventListener('resize', resize);
+  resize();
+  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>/\\{}[]|=+-*';
+  const cols  = Math.floor(canvas.width / 16);
+  const drops = Array(cols).fill(1);
+  function draw() {
+    ctx.fillStyle = 'rgba(2,4,8,0.05)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#00f5ff';
+    ctx.font = '13px Share Tech Mono, monospace';
+    drops.forEach((y, i) => {
+      const char = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillText(char, i * 16, y * 16);
+      if (y * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    });
+  }
+  setInterval(draw, 60);
+})();
+
+/* ============================================
+   TYPEWRITER
+============================================ */
+function typeWriter(element, text, speed, callback) {
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      element.textContent += text[i++];
+      setTimeout(type, speed);
+    } else if (callback) { callback(); }
+  }
+  element.textContent = '';
+  type();
+}
+
+window.addEventListener('load', () => {
+  const tag  = document.getElementById('typed-tag');
+  const role = document.getElementById('typed-role');
+  typeWriter(tag, '> IDENTIFICANDO OPERADOR...', 40, () => {
+    setTimeout(() => {
+      typeWriter(role, 'Full-Stack Developer & Security Researcher', 50);
+    }, 300);
+  });
+});
+
+/* ============================================
+   SCROLL ANIMATIONS
+============================================ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Animate tech bars
+      e.target.querySelectorAll('.tech-bar-fill').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 200);
+      });
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+/* Also animate bars on initial load if in viewport */
+setTimeout(() => {
+  document.querySelectorAll('.tech-bar-fill').forEach(bar => {
+    const rect = bar.getBoundingClientRect();
+    if (rect.top < window.innerHeight) bar.style.width = bar.dataset.width + '%';
+  });
+}, 500);
+
+/* ============================================
+   NAVBAR SCROLL
+============================================ */
+const navbar = document.getElementById('navbar');
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('section[id]');
+
+window.addEventListener('scroll', () => {
+  if (scrollY > 50) navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+
+  // Back to top visibility
+  const btn = document.getElementById('backToTop');
+  if (scrollY > 300) btn.classList.add('visible');
+  else btn.classList.remove('visible');
+
+  // Active nav link
+  let current = '';
+  sections.forEach(s => {
+    if (scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+
+/* ============================================
+   TECH STACK FILTER
+============================================ */
+document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.filter;
+    document.querySelectorAll('.tech-col').forEach(col => {
+      if (filter === 'all' || col.dataset.cat === filter) {
+        col.style.display = '';
+        col.querySelector('.tech-bar-fill').style.width = col.querySelector('.tech-bar-fill').dataset.width + '%';
+      } else {
+        col.style.display = 'none';
+      }
+    });
+  });
+});
+
+/* ============================================
+   PROJECT FILTER
+============================================ */
+document.querySelectorAll('.filter-btn[data-project-filter]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn[data-project-filter]').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.projectFilter;
+    document.querySelectorAll('.project-item').forEach(item => {
+      if (filter === 'all' || item.dataset.pcat === filter) {
+        item.style.display = '';
+        item.style.animation = 'fadeIn 0.4s ease forwards';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+});
+
+/* ============================================
+   CLOCK & UPTIME
+============================================ */
+const startTime = Date.now();
+function updateClock() {
+  const now  = new Date();
+  const h    = String(now.getHours()).padStart(2,'0');
+  const m    = String(now.getMinutes()).padStart(2,'0');
+  const s    = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent = `${h}:${m}:${s} AST`;
+
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const em = String(Math.floor(elapsed/60)).padStart(2,'0');
+  const es = String(elapsed % 60).padStart(2,'0');
+  document.getElementById('uptime').textContent = `${em}m${es}s`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ============================================
+   CONTACT FORM
+============================================ */
+function handleSubmit(btn) {
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>TRANSMITIENDO...';
+  setTimeout(() => {
+    btn.innerHTML = '<i class="fas fa-check me-2"></i>TRANSMISIÓN EXITOSA ✓';
+    btn.style.borderColor = 'var(--neon-green)';
+    btn.style.color       = 'var(--neon-green)';
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>TRANSMITIR MENSAJE';
+      btn.style.borderColor = '';
+      btn.style.color       = '';
+    }, 3000);
+  }, 2000);
+}
+
+/* ============================================
+   SMOOTH NAV LINKS
+============================================ */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const nav = document.getElementById('navMenu');
+      if (nav.classList.contains('show')) {
+        bootstrap.Collapse.getInstance(nav)?.hide();
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
